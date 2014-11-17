@@ -1,4 +1,4 @@
-#module Minesweeper
+
   class Tile
     attr_reader :grid, :pos
     attr_accessor :bombed, :flagged, :revealed
@@ -17,6 +17,7 @@
       @pos = pos
       @board = board
       @bombed, @flagged, @revealed = false, false, false
+      @seen_flag = false
     end
 
     def bombed?
@@ -54,22 +55,27 @@
     end
 
     def reveal
-      self.revealed = true
-
-      if self.neighbor_bomb_count == 0
-        self.neighbors.each do |neighbor|
-          neighbor.reveal
+      #self.revealed = true
+      #@seen_flag = true
+      unless @seen_flag == true
+        @seen_flag = true
+        self.revealed = true
+        if self.neighbor_bomb_count == 0
+          self.neighbors.each do |neighbor|
+            neighbor.reveal
+          end
         end
       end
     end
 
     def inspect
-      "Bombed is #{bombed}. Neighbor bomb count is #{neighbor_bomb_count}."
+      "#{pos}"
+      # "Bombed is #{bombed}. Neighbor bomb count is #{neighbor_bomb_count}."
     end
   end
 
   class Board
-    attr_reader :grid
+    attr_reader :grid, :bomb_tiles
 
     def initialize
       @grid = Array.new(9){Array.new(9) }
@@ -98,6 +104,7 @@
 
     def seed_bombs
       bombs = []
+      @bomb_tiles = []
       until bombs.count == 10
         i = rand(8)
         j = rand(8)
@@ -106,7 +113,20 @@
 
       bombs.each do |pos|
         self[pos].bombed = true
+        @bomb_tiles << self[pos]
       end
+    end
+
+    def over?
+      self.lost? || self.won?
+    end
+
+    def lost?(value = false)
+      return value
+    end
+
+    def won?
+      @bomb_tiles.all?{ |bomb| bomb.flagged}
     end
 
 
@@ -116,15 +136,23 @@
 
     def initialize(board)
       @board = board
+      @board.seed_bombs
     end
 
     def play
+      p @board.bomb_tiles
+      until @board.won?
+        self.display
+        choose_tile
+      end
 
+      if @board.won?
+        "Congratulations, you won!"
+      end
 
     end
 
     def choose_tile
-      #choose coordinates, choose action (reveal/flag),
       puts "Please put in the coordinates (format: 1 2) of the tile you choose."
       choice = gets.chomp
       pos = []
@@ -138,8 +166,10 @@
 
       if action == "f"
         @board[pos].flagged = true
+        @board[pos].seen_flag = true
       elsif action == "r"
         if @board[pos].bombed?
+          @board.lost?(true)
           return 'game over'
         else
           @board[pos].reveal
@@ -147,18 +177,6 @@
       end
     end
 
-    def over?
-      game.won? || game.lost?
-    end
-
-    def won?
-      #all tiles with bomb flagged correctly
-      bombs.all?{ |bomb| bomb.flagged == true}
-    end
-
-    def lost?
-
-    end
 
     def display
       @board.grid.each do |row|
@@ -178,4 +196,9 @@
       end
     end
   end
-#end
+
+  if __FILE__ == $PROGRAM_NAME
+    board = Board.new
+    game = Game.new(board)
+    game.play
+  end
