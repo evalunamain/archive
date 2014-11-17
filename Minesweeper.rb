@@ -1,7 +1,7 @@
 
   class Tile
-    attr_reader :grid, :pos
-    attr_accessor :bombed, :flagged, :revealed
+    #attr_reader :board, :pos
+    attr_accessor :bombed, :flagged, :revealed, :seen_flag
 
     OFFSETS = [
       [-1, -1],
@@ -55,22 +55,26 @@
     end
 
     def reveal
-      #self.revealed = true
-      #@seen_flag = true
-      unless @seen_flag == true
+      if self.flagged
+        self.flagged = false
+        @seen_flag = false
+      end
+
+      if @seen_flag != true
         @seen_flag = true
         self.revealed = true
         if self.neighbor_bomb_count == 0
           self.neighbors.each do |neighbor|
             neighbor.reveal
           end
+
         end
       end
     end
 
     def inspect
-      "#{pos}"
-      # "Bombed is #{bombed}. Neighbor bomb count is #{neighbor_bomb_count}."
+       "#{@pos}"
+    #   # "Bombed is #{bombed}. Neighbor bomb count is #{neighbor_bomb_count}."
     end
   end
 
@@ -121,8 +125,8 @@
       self.lost? || self.won?
     end
 
-    def lost?(value = false)
-      return value
+    def lost?
+      return @bomb_tiles.any?{|bomb| bomb.revealed}
     end
 
     def won?
@@ -141,13 +145,16 @@
 
     def play
       p @board.bomb_tiles
-      until @board.won?
+      until @board.over?
         self.display
         choose_tile
       end
 
       if @board.won?
-        "Congratulations, you won!"
+        p "Congratulations, you won!"
+      end
+      if @board.lost?
+        p "You lost"
       end
 
     end
@@ -168,12 +175,12 @@
         @board[pos].flagged = true
         @board[pos].seen_flag = true
       elsif action == "r"
-        if @board[pos].bombed?
-          @board.lost?(true)
-          return 'game over'
-        else
+        # if @board[pos].bombed?
+        #   @board.lost?(true)
+        #   p 'game over'
+        #   return
+        # else
           @board[pos].reveal
-        end
       end
     end
 
