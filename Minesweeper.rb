@@ -1,5 +1,7 @@
 #module Minesweeper
   class Tile
+    attr_reader :grid, :pos
+    attr_accessor :bombed, :flagged, :revealed
 
     OFFSETS = [
       [-1, -1],
@@ -11,52 +13,58 @@
       [1, 0],
       [1, 1]
     ]
-    def initialize(grid, pos)
+    def initialize(pos, board)
       @pos = pos
-      @grid = grid
-      @status = nil
-      @bomb_count = neighbor_bomb_count
-      @is_bomb = !grid[pos[0]][pos[1]].nil?
-      # @bombed, @flagged, @revealed = nil, nil, nil
+      @board = board
+      @bombed, @flagged, @revealed = false, false, false
     end
 
-    def set_status(status)
-      @status = status
+    def bombed?
+      @bombed
+    end
+
+    def flagged?
+      @flagged
+    end
+
+    def revealed?
+      @revealed
     end
 
     def neighbor_bomb_count
-      count = 0
-
-      neighbors_arr = neighbors
-
-      neighbors_arr.each do |tile|
-        i, j = tile
-        unless @grid[i][j].nil?
-          count += 1
-        end
-      end
-      count
+      neighbors.select(&:bombed?).count
     end
 
     def neighbors
-      neighbors_arr = []
-
-      OFFSETS.each do |item|
-        neighbor =  [@pos[0] + item[0], @pos[1] + item[1]]
-        neighbors_arr << neighbor if neighbor.all?{ |num| num.between?(0, 8)}
+      neighbors_pos.map do |tile_pos|
+        @board[tile_pos]
       end
-
-      neighbors_arr
     end
 
-    def reveal(pos, grid)
-      i, j = pos
+    def neighbors_pos
+      neighbors_pos = []
 
-      if is_bomb
-        p "game over"
+      OFFSETS.each do |item|
 
+         neighbor =  [@pos[0] + item[0], @pos[1] + item[1]]
+         neighbors_pos << neighbor if neighbor.all?{ |num| num.between?(0, 8)}
       end
 
+      neighbors_pos
+    end
+
+    def reveal
+      self.revealed = true
+
+      if self.neighbor_bomb_count == 0
+        self.neighbors.each do |neighbor|
+          neighbor.reveal
+        end
+      end
+    end
+
+    def inspect
+      "Bombed is #{bombed}. Neighbor bomb count is #{neighbor_bomb_count}."
     end
   end
 
@@ -64,11 +72,28 @@
     attr_reader :grid
 
     def initialize
-      @grid = Array.new(9){Array.new(9)}
+      @grid = Array.new(9){Array.new(9) }
+
+      @grid.each_index do |row|
+        @grid.each_index do |col|
+          pos = [row, col]
+          self[pos] = Tile.new(pos, self)
+        end
+      end
     end
 
     def grid
       @grid
+    end
+
+    def [](pos)
+      i, j = pos
+      self.grid[i][j]
+    end
+
+    def []=(pos, value)
+      i, j = pos
+      self.grid[i][j] = value
     end
 
     def seed_bombs
@@ -79,20 +104,78 @@
         bombs << [i, j] unless bombs.include?([i, j])
       end
 
-      bombs.each do |bomb|
-        @grid[bomb[0]][bomb[1]] = 'B'
+      bombs.each do |pos|
+        self[pos].bombed = true
       end
     end
+
 
   end
 
   class Game
+
+    def initialize(board)
+      @board = board
+    end
+
     def play
-      @board = Board.new
+
+
+    end
+
+    def choose_tile
+      #choose coordinates, choose action (reveal/flag),
+      puts "Please put in the coordinates (format: 1 2) of the tile you choose."
+      choice = gets.chomp
+      pos = []
+      choice.split(' ').each do |i|
+        pos << Integer(i)
+      end
+
+
+      puts "Please type 'f' for flag or 'r' for reveal."
+      action = gets.chomp
+
+      if action == "f"
+        @board[pos].flagged = true
+      elsif action == "r"
+        if @board[pos].bombed?
+          return 'game over'
+        else
+          @board[pos].reveal
+        end
+      end
+    end
+
+    def over?
+      game.won? || game.lost?
+    end
+
+    def won?
+      #all tiles with bomb flagged correctly
+      bombs.all?{ |bomb| bomb.flagged == true}
+    end
+
+    def lost?
+
     end
 
     def display
-
+      @board.grid.each do |row|
+        row.each do |tile|
+          if tile.flagged?
+            print "F"
+          elsif tile.revealed?
+            count = tile.neighbor_bomb_count
+            #count > 0 ? print count : print "_"
+            print count if count > 0
+            print '_' if count == 0
+          else
+            print '*'
+          end
+        end
+        print "\n"
+      end
     end
   end
 #end
