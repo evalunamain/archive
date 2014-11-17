@@ -1,42 +1,74 @@
 #module Minesweeper
   class Tile
 
-    def neighbor_bomb_count(pos, grid)
+    OFFSETS = [
+      [-1, -1],
+      [-1, 0],
+      [-1, 1],
+      [0, -1],
+      [0, 1],
+      [1, -1],
+      [1, 0],
+      [1, 1]
+    ]
+    def initialize(grid, pos)
+      @pos = pos
+      @grid = grid
+      @status = nil
+      @bomb_count = neighbor_bomb_count
+      @is_bomb = !grid[pos[0]][pos[1]].nil?
+      # @bombed, @flagged, @revealed = nil, nil, nil
+    end
+
+    def set_status(status)
+      @status = status
+    end
+
+    def neighbor_bomb_count
       count = 0
 
-      neighbors = neighbors(pos, grid)
+      neighbors_arr = neighbors
 
-      neighbors.each do |tile|
+      neighbors_arr.each do |tile|
         i, j = tile
-        if grid[i][j] == "B"
+        unless @grid[i][j].nil?
           count += 1
         end
       end
       count
     end
 
-    def neighbors(pos, grid)
-      neighbors = []
+    def neighbors
+      neighbors_arr = []
 
-      [-1, 1].each do |i|
-        [-1, 1].each do |j|
-          neighbor1 =  [pos[0] + i, pos[1] + j]
-          neighbor2 = [pos[0] + j, pos[1] + i]
-          neighbors << neighbor1 if neighbor1.all?{ |num| num.between?(0, 8)}
-          neighbors << neighbor2 if neighbor2.all?{ |num| num.between?(0, 8)}
-        end
+      OFFSETS.each do |item|
+        neighbor =  [@pos[0] + item[0], @pos[1] + item[1]]
+        neighbors_arr << neighbor if neighbor.all?{ |num| num.between?(0, 8)}
       end
 
-      neighbors
+      neighbors_arr
     end
 
-    def reveal
+    def reveal(pos, grid)
+      i, j = pos
+
+      if is_bomb
+        p "game over"
+
+      end
+
     end
   end
 
   class Board
+    attr_reader :grid
+
     def initialize
       @grid = Array.new(9){Array.new(9)}
+    end
+
+    def grid
+      @grid
     end
 
     def seed_bombs
@@ -54,6 +86,13 @@
 
   end
 
-  class Player
+  class Game
+    def play
+      @board = Board.new
+    end
+
+    def display
+
+    end
   end
 #end
