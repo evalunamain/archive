@@ -1,26 +1,39 @@
 require_relative "piece.rb"
 
-class MoveError < StandardError
+class InvalidMoveError < StandardError
 end
 
 class Board
   attr_reader :size, :grid
 
-  def initialize(size)
+  def initialize(size, new_board = true)
     @size = size
-    make_board
+    make_board(new_board)
   end
 
-  def make_board
+  def make_board(new_board)
     @grid = Array.new(size) { Array.new(size) }
 
-    [:white, :black].each do |color|
-      place_pieces(@grid, color)
+    if new_board
+      [:white, :black].each do |color|
+        place_pieces(@grid, color)
+      end
     end
   end
 
-  def capture(piece)
-    @board[piece] = nil
+  def dup
+    new_board = Board.new(@grid.size, false)
+
+    pieces.each do |piece|
+      pos = piece.pos
+      new_board[pos] = Piece.new(piece.color, piece.pos, new_board, piece.king)
+    end
+
+    new_board
+  end
+
+  def pieces
+    @grid.flatten.reject(&:nil?)
   end
 
   def place_pieces(grid, color)
@@ -51,34 +64,38 @@ class Board
     @grid[y][x] = value
   end
 
-  def empty_between?(start, target)
-    squares = find_squares_between(start, target)
-
-    squares.all? { |square| self[square].nil? }
+  def capture(piece)
+    self[piece] = nil
   end
 
-  def find_squares_between(start, target)
-    x_range = find_axis(start[0], target[0])
-    y_range = find_axis(start[1], target[1])
-
-    squares = []
-    x_range.each do |x|
-      y_range.each do |y|
-        squares << [x, y]
-      end
-    end
-    squares
-  end
-
-  def find_axis(pos1, pos2)
-    if pos1 < pos2
-      i, j = (pos1 + 1), pos2
-    else
-      i, j = (pos2 + 1), pos1
-    end
-
-    axis_range = (i..j)
-  end
+  # def empty_between?(start, target)
+  #   squares = find_squares_between(start, target)
+  #
+  #   squares.all? { |square| self[square].nil? }
+  # end
+  #
+  # def find_squares_between(start, target)
+  #   x_range = find_axis(start[0], target[0])
+  #   y_range = find_axis(start[1], target[1])
+  #
+  #   squares = []
+  #   x_range.each do |x|
+  #     y_range.each do |y|
+  #       squares << [x, y]
+  #     end
+  #   end
+  #   squares
+  # end
+  #
+  # def find_axis(pos1, pos2)
+  #   if pos1 < pos2
+  #     i, j = (pos1 + 1), pos2
+  #   else
+  #     i, j = (pos2 + 1), pos1
+  #   end
+  #
+  #   axis_range = (i..j)
+  # end
 
   def display
     puts self.render
