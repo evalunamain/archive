@@ -33,11 +33,12 @@ class Board
   end
 
   def pieces
-    @grid.flatten.reject(&:nil?)
+    @grid.flatten.compact
   end
 
   def place_pieces(grid, color)
     rows = (grid.size / 2 - 1)
+
     if color == :black
      y_range = ((@grid.size - 1).downto(@grid.size - rows))
     else
@@ -68,57 +69,19 @@ class Board
     self[piece] = nil
   end
 
-  # def empty_between?(start, target)
-  #   squares = find_squares_between(start, target)
-  #
-  #   squares.all? { |square| self[square].nil? }
-  # end
-  #
-  # def find_squares_between(start, target)
-  #   x_range = find_axis(start[0], target[0])
-  #   y_range = find_axis(start[1], target[1])
-  #
-  #   squares = []
-  #   x_range.each do |x|
-  #     y_range.each do |y|
-  #       squares << [x, y]
-  #     end
-  #   end
-  #   squares
-  # end
-  #
-  # def find_axis(pos1, pos2)
-  #   if pos1 < pos2
-  #     i, j = (pos1 + 1), pos2
-  #   else
-  #     i, j = (pos2 + 1), pos1
-  #   end
-  #
-  #   axis_range = (i..j)
-  # end
-
   def display
     puts self.render
   end
 
-  def dark_squares
-    dark_squares = []
-
-    (0...@grid.size).each do |x|
-      (0...@grid.size).each do |y|
-        next if y.odd? && x.even?
-        next if x.odd? && y.even?
-
-        dark_squares << [x,y]
-      end
-    end
-    dark_squares
-  end
 
   def render
+    switch = false
+
     @grid.reverse.map do |row|
+      switch = !switch
       row.map do |square|
-        square.nil? ? "  " : square.render
+        switch = !switch
+          square.nil? ? "    ".checker(switch) : square.render.checker(switch)
       end.join("")
     end.join("\n")
   end
@@ -129,8 +92,51 @@ class Board
 
 end
 
-
-if __FILE__ == $PROGRAM_NAME
-  b = Board.new(8)
-  puts b.render
+class String
+  def checker(switch)
+    switch ? self.on_white : self
+  end
 end
+
+  # def dark_squares
+  #   dark_squares = []
+  #
+  #   (0...@grid.size).each do |x|
+  #     (0...@grid.size).each do |y|
+  #       next if y.odd? && x.even?
+  #       next if x.odd? && y.even?
+  #
+  #       dark_squares << [x,y]
+  #     end
+  #   end
+  #   dark_squares
+  # end
+
+# def empty_between?(start, target)
+#   squares = find_squares_between(start, target)
+#
+#   squares.all? { |square| self[square].nil? }
+# end
+#
+# def find_squares_between(start, target)
+#   x_range = find_axis(start[0], target[0])
+#   y_range = find_axis(start[1], target[1])
+#
+#   squares = []
+#   x_range.each do |x|
+#     y_range.each do |y|
+#       squares << [x, y]
+#     end
+#   end
+#   squares
+# end
+#
+# def find_axis(pos1, pos2)
+#   if pos1 < pos2
+#     i, j = (pos1 + 1), pos2
+#   else
+#     i, j = (pos2 + 1), pos1
+#   end
+#
+#   axis_range = (i..j)
+# end
