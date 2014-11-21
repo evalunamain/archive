@@ -45,6 +45,6 @@ class Game
   end
 
   def over?
-    @board.pieces.empty?
+    @board.pieces(:black).empty? || @board.pieces(:white).empty?
   end
 end

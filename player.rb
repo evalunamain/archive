@@ -2,7 +2,6 @@ class InputError < StandardError
 end
 
 class Player
-
   attr_reader :color
 
   def initialize(color)
@@ -28,8 +27,6 @@ class Player
     [start_piece, move_sequence]
 
   end
-
-
 
   def get_input(prompt)
     puts prompt
