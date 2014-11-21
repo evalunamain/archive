@@ -34,12 +34,27 @@ describe Player do
   end
 
   describe "#bet" do
-    it "raises and error for invalid input"
 
-    it "removes money from bankroll for a call or raise"
+    it "removes money from bankroll for a call or raise" do
+      player.bet(50)
+      expect(player.bankroll).to eq(950)
+    end
 
-    it "discards all cards on a fold"
+    it "should raise an error if bet is larger than current bankroll" do
+      expect {player.bet(1001)}.to raise_error
+    end
   end
+
+  describe "#fold" do
+    it "should discard all cards" do
+      player.hand = hand
+      player.fold
+      expect(player.hand).to be_empty
+    end
+  end
+
+  #   it "discards all cards on a fold"
+  # end
 
 
 

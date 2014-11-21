@@ -8,10 +8,11 @@ class Player
     @hand = []
   end
 
-  def discard(input)
-    #puts "Which cards do you wish to trade?"
-    #helper methods to parse input
+  def get_input
+    #write later, this is annoying right now
+  end
 
+  def discard(input)
     raise "" if input.count > 3
 
     discarded_cards = []
@@ -24,8 +25,16 @@ class Player
     discarded_cards
   end
 
-  def bet
-    #fold, see or raise
+  def bet(amount)
+    raise "NO" if amount > bankroll
+    #is see and raise
+    
+    self.bankroll -= amount
+    amount
+  end
+
+  def fold
+    @hand.shift(5)
   end
 
   private
