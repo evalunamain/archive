@@ -5,9 +5,6 @@ end
 
 class Deck
 
-
-
-
   def fill_deck
     Card.suits.each do |suit|
       Card.values.each do |value|
