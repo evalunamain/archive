@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+TagTopic.create( topic_name: 'News' )
+TagTopic.create( topic_name: 'Sports' )
+TagTopic.create( topic_name: 'Entertainment' )
+TagTopic.create( topic_name: 'Food' )
+TagTopic.create( topic_name: 'Comedy' )
+TagTopic.create( topic_name: 'Business' )
+TagTopic.create( topic_name: 'Educational' )

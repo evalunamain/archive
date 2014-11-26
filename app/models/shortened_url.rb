@@ -16,14 +16,25 @@ class ShortenedUrl < ActiveRecord::Base
     :primary_key => :id
     )
 
-
-
   has_many(
     :visitors,
     -> { distinct },
     :through => :visits,
     :source => :visitor
     )
+
+  has_many(
+    :tags,
+    :class_name => "Tagging",
+    :foreign_key => :url_id,
+    :primary_key => :id
+  )
+
+  has_many(
+    :tagged_topics,
+    :through => :tags,
+    :source => :topic
+  )
 
   def self.random_code
     unique = false
