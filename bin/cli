@@ -21,6 +21,17 @@ def visit_url(user)
   Launchy.open(long_url)
 end
 
+def display_popular_urls
+  puts "Enter the category:"
+  category = gets.chomp
+  topic = TagTopic.find_by( topic_name: category)
+  popular_urls = topic.most_popular_urls(3)
+  puts "Most popular #{category} links:"
+  3.times.each do |i|
+  puts "#{i+1}. #{popular_urls[i]}" if popular_urls.size > i
+  end
+end
+
 
 begin
   user = find_user
@@ -32,9 +43,12 @@ end
 puts " What do you want to do?"
 puts "1. Create shortened URL"
 puts "2. Visit shortened URL"
+puts "3. Show most popular URLs"
 response = gets.chomp.to_i
 if response == 1
   create_shortened_url(user)
 elsif response == 2
   visit_url(user)
+elsif response == 3
+  display_popular_urls
 end
