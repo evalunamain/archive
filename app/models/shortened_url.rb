@@ -1,7 +1,10 @@
 class ShortenedUrl < ActiveRecord::Base
-  validates :long_url, :presence => true
+
+  validates :long_url, :presence => true, :length => { maximum: 1024 }
   validates :submitter_id, :presence => true
   validates :short_url, :presence => true, :uniqueness => true
+  validate :check_for_frequent_submissions
+
 
   belongs_to(
     :submitter,
@@ -49,7 +52,7 @@ class ShortenedUrl < ActiveRecord::Base
 
   def self.create_for_user_and_long_url!(user, long_url)
     short_url = random_code
-    ShortenedUrl.create!( submitter_id: user.id, long_url: long_url, short_url: short_url)
+    user.submitted_urls.create!(long_url: long_url, short_url: short_url)
   end
 
   def num_clicks
@@ -62,6 +65,14 @@ class ShortenedUrl < ActiveRecord::Base
 
   def num_recent_uniques
     visits.select(:visitor_id).where("created_at > ?", 10.minutes.ago).distinct.count
+  end
+
+  private
+
+  def check_for_frequent_submissions
+    if (5 <= ShortenedUrl.select(:id).where("submitter_id = ? AND created_at > ?", submitter_id, 5.minutes.ago).count)
+      errors[:frequency] << "user has submitted too much too recently!"
+    end
   end
 
 end

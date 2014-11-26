@@ -8,9 +8,9 @@ class TagTopic < ActiveRecord::Base
   )
 
   has_many(
-  :tagged_urls,
-  :through => :tags,
-  :source => :url
+    :tagged_urls,
+    :through => :tags,
+    :source => :url
   )
 
 end
