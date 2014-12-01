@@ -5,7 +5,8 @@ class Question < ActiveRecord::Base
     :answer_choices,
     :class_name => "AnswerChoice",
     :foreign_key => :question_id,
-    :primary_key => :id
+    :primary_key => :id,
+    :dependent => :restrict
     )
 
   belongs_to(
@@ -24,7 +25,7 @@ class Question < ActiveRecord::Base
       .select("answer_choices.*, COUNT(responses.id) AS response_count")
       .joins("LEFT OUTER JOIN responses ON answer_choices.id = responses.answer_choice_id")
       .group("answer_choices.id")
-      .where("answer_choices.question_id = ?", self.id)
+      # .where("answer_choices.question_id = ?", self.id)
 
     results.map { |result| { result.choice => result.response_count } }
 
