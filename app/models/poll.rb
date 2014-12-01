@@ -14,4 +14,7 @@ class Poll < ActiveRecord::Base
     :foreign_key => :poll_id,
     :primary_key => :id
   )
+
+  has_many :answer_choices, :through => :questions, :source => :answer_choices
+  has_many :responses, :through => :answer_choices, :source => :responses
 end
