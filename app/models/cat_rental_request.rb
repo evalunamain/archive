@@ -1,11 +1,13 @@
 class CatRentalRequest < ActiveRecord::Base
   STATUSES = %w(PENDING APPROVED DENIED)
 
-  validates :cat_id, :start_date, :end_date, presence: true
+  validates :cat_id, :start_date, :end_date, :user_id, presence: true
   validates :status, inclusion: { in: STATUSES }
   validate :cat_not_approved_twice_at_same_time
 
   belongs_to :cat
+
+  belongs_to :user
 
   after_initialize do
     self.status ||= "PENDING"

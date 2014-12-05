@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141205154254) do
+ActiveRecord::Schema.define(version: 20141205204521) do
 
   create_table "cat_rental_requests", force: true do |t|
     t.integer  "cat_id",     null: false
@@ -20,9 +20,11 @@ ActiveRecord::Schema.define(version: 20141205154254) do
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id",    null: false
   end
 
   add_index "cat_rental_requests", ["cat_id"], name: "index_cat_rental_requests_on_cat_id"
+  add_index "cat_rental_requests", ["user_id"], name: "index_cat_rental_requests_on_user_id"
 
   create_table "cats", force: true do |t|
     t.date     "birth_date"
@@ -32,17 +34,28 @@ ActiveRecord::Schema.define(version: 20141205154254) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id",     null: false
   end
+
+  add_index "cats", ["user_id"], name: "index_cats_on_user_id"
+
+  create_table "session_tokens", force: true do |t|
+    t.text     "token",       null: false
+    t.integer  "user_id",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "environment"
+  end
+
+  add_index "session_tokens", ["user_id"], name: "index_session_tokens_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "user_name",       null: false
     t.string   "password_digest", null: false
-    t.string   "session_token",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "users", ["password_digest"], name: "index_users_on_password_digest", unique: true
-  add_index "users", ["session_token"], name: "index_users_on_session_token", unique: true
 
 end

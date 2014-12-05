@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  before_action :go_to_root, only: [:new, :create]
+
   def new
     @user = User.new
     render :new
@@ -21,6 +23,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def go_to_root
+    redirect_to cats_url if current_user
+  end
 
   def user_params
     params.require(:user).permit(:user_name, :password)

@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   root to: 'cats#index'
 
-  resource :session, only: [:new, :create, :destroy]
+  resource :session, only: [:new, :create, :destroy] do
+      member do
+        post 'logout/:token_id', action: "destroy"
+      end
+    end
 
   resources :users, only: [:new, :create, :show]
 
