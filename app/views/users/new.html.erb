@@ -1,0 +1,15 @@
+<h1> Make uh user. </h1>
+
+<form action="<%= users_url %>" method="POST">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+  <input type="text" id="user_name" name="user[user_name]" value="<%= @user.user_name %>">
+  <label for="user_name">Username</label>
+  <br>
+
+  <input type="password" id="password" name="user[password]">
+  <label for="password">Password</label>
+  <br>
+
+  <input type="submit" value="Create Account">
+</form>

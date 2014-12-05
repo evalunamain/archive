@@ -7,7 +7,10 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<%= current_user ? current_user.user_name : "Sign in, you idiot." %>
+<% if current_user %>
+  <%= button_to "Log Out.", action=session_url, method: :delete %>
+<% end %>
 <%= yield %>
 
 </body>

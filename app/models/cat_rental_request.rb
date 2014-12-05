@@ -33,7 +33,7 @@ class CatRentalRequest < ActiveRecord::Base
 
   def overlapping_requests
     overlap_where = "start_date <= ? OR ? >= end_date"
-    identify_where = "id != #{id} OR id IS NULL"
+    identify_where = "#{id} IS NULL OR id != #{id}"
     CatRentalRequest.distinct.where(overlap_where, self.end_date, self.start_date).where(identify_where)
   end
 
