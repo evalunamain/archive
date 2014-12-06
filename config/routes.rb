@@ -3,11 +3,15 @@ Rails.application.routes.draw do
 
   resource :session, only: [:new, :create, :destroy] do
       member do
-        post 'logout/:token_id', action: "destroy"
+        post '/destroy/:token_id', action: "destroy"
       end
     end
 
-  resources :users, only: [:new, :create, :show]
+  resources :users, only: [:new, :create, :show] do
+		collection do
+			post '/destroy/:token_id', redirect_to: 'session/destroy/:token_id', action: "destroy"
+		end
+	end
 
   resources :cats, only: [:index, :show, :new, :create, :edit, :update]
 

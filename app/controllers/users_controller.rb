@@ -19,7 +19,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    render :new
+		@user = User.find(params[:id])
+    render :show
   end
 
   private
