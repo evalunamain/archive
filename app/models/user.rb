@@ -1,13 +1,13 @@
 class User < ActiveRecord::Base
   validates :user_name, :password_digest, presence: true, uniqueness: true
 
-  after_initialize :ensure_session_token
+  # after_initialize :ensure_session_token
 
   has_many :cats
 
   has_many :cat_rental_requests
 
-  has_many :session_tokens
+  has_many :session_tokens, inverse_of: :user
 
   def self.find_by_credentials(user_name, password)
     user = User.find_by(user_name: user_name)
@@ -26,10 +26,10 @@ class User < ActiveRecord::Base
     BCrypt::Password.new(self.password_digest).is_password?(password)
   end
 
-  def ensure_session_token
-    token = self.session_tokens.new(token: SecureRandom::urlsafe_base64(16), user_id: id)
-    token.save!
-  end
+  # def ensure_session_token
+ #    token = self.session_tokens.new(token: SecureRandom::urlsafe_base64(16),)
+ #    token.save!
+ #  end
 
   def set_session_token!
     new_token = self.session_tokens.new(token: SecureRandom::urlsafe_base64(16), user_id: id)

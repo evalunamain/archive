@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy()
-    SessionToken.find(params[:token_id]).destroy!
+    SessionToken.destroy_all(id: params[:token_id])
     redirect_to new_session_url
   end
 
