@@ -1,0 +1,8 @@
+<% @users.each do |user| %>
+<ul>
+  <li><%= user.email %> </li>
+  <% if user == current_user %>
+  <%= button_to "Log Out", action= session_url, method: :delete %>
+  <% end %>
+</ul>
+<% end %>

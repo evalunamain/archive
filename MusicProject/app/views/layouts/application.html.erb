@@ -7,7 +7,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<% if flash[:errors] %>
+  <div> <%= flash[:errors] %> </div>
+<% end %>
+<% if signed_in? %>
+Welcome <%= current_user.email %>
+<% end %>
 <%= yield %>
 
 </body>
