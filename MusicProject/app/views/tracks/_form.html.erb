@@ -9,13 +9,13 @@
 <label for="song_title">Title</label>
   <input type="text" name="track[title]" value="<%= @track.title %>" id="song_title">
   <br>
-
 <label for="Album">Album</label>
 <select name="track[album_id]" id="Album">
   <option></option>
+
   <% @albums.each do |album| %>
   <option value="<%= album.id %>"
-          <%= "selected" if album.id.to_s == params[:id] %>>
+            <%= "selected" if album.id == @track.album_id %>>
           <%= album.title %>
         </option>
   <% end %>

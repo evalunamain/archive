@@ -16,7 +16,7 @@
   <option></option>
   <% @bands.each do |band| %>
     <option value= <%= band.id %>
-      <%="selected" if band.id.to_s == params[:id] %>>
+      <%="selected" if band.id == @album.band_id %>>
           <%= band.name %>
     </option>
   <% end %>

@@ -1,6 +1,6 @@
 class AlbumsController < ApplicationController
   def new
-    @album = Album.new
+    @album = Album.new(band_id: params[:id])
     @bands = Band.all
   end
 
@@ -26,7 +26,7 @@ class AlbumsController < ApplicationController
   end
 
   def update
-    @album.find(params[:id])
+    @album = Album.find(params[:id])
     if @album.update(album_params)
       redirect_to album_url(@album)
     else

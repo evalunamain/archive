@@ -6,3 +6,9 @@
   <li><%= button_to "Delete track", track_url(@track), method: :delete %></li>
 
 </ul>
+<%= render "notes/form" %>
+
+<ul><% @track.notes.each do |note| %>
+  <li><%= render note %></li>
+<% end %>
+</ul>
