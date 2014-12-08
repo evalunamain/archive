@@ -12,6 +12,7 @@
 <% end %>
 <% if signed_in? %>
 Welcome <%= current_user.email %>
+<%= button_to "Log Out", action= session_url, method: :delete %>
 <% end %>
 <%= yield %>
 

@@ -16,8 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    current_user.try(:reset_session_token)
-    session[:session_token] = nil
+    log_out
     redirect_to new_session_url
   end
 end

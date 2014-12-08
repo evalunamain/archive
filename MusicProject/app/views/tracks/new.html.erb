@@ -1,0 +1,2 @@
+<h1>Add a track to <%= Album.find(params[:id]).title %> </h1>
+<%= render "form", track: @track, action: :new %>

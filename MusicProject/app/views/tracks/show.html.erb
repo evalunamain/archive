@@ -1,0 +1,8 @@
+<h3>TITLE: <%= @track.title.upcase %></h3>
+
+<ul>
+  <li>Appears on: <%= link_to "#{@track.album.title}", album_url(@track.album_id) %></li>
+  <li><%= button_to "Edit track", edit_track_url, method: :get %></li>
+  <li><%= button_to "Delete track", track_url(@track), method: :delete %></li>
+
+</ul>

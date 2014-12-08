@@ -1,4 +1,4 @@
-<% action_url = (action == :new ? users_url : user_url(user)) %>
+<% action_url = (action == :new ? users_url : user_url(@user)) %>
 
 <form action="<%= action_url %>" method="post">
   <%= auth_token %>

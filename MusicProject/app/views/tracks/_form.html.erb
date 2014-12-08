@@ -1,0 +1,25 @@
+<% action_url = (action == :new ? tracks_url : track_url(@track)) %>
+
+<form action="<%= action_url %>" method="post">
+  <%= auth_token %>
+  <% if action == :edit %>
+    <input type="hidden" name="_method" value="patch">
+  <% end %>
+
+<label for="song_title">Title</label>
+  <input type="text" name="track[title]" value="<%= @track.title %>" id="song_title">
+  <br>
+
+<label for="Album">Album</label>
+<select name="track[album_id]" id="Album">
+  <option></option>
+  <% @albums.each do |album| %>
+  <option value="<%= album.id %>"
+          <%= "selected" if album.id.to_s == params[:id] %>>
+          <%= album.title %>
+        </option>
+  <% end %>
+</select>
+<br>
+<input type="submit" name="Save">
+</form>

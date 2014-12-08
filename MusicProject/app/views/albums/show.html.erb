@@ -1,0 +1,15 @@
+<h1><%= @album.title %></h1>
+<ul>
+  <li>Band: <%= link_to "#{@album.band.name}", band_url(@album.band_id)%></li>
+  <li><%= button_to "Edit album", edit_album_url, method: :get %></li>
+  <li><%= button_to "Delete album", albums_url, method: :delete %></li>
+</ul>
+
+<h3>Tracks</h3>
+<%= button_to "Add track", new_album_track_url, method: :get%>
+<br>
+<ol>
+  <% @album.tracks.each do |track| %>
+    <li><%= link_to "#{track.title.capitalize}", track_url(track.id) %></li>
+  <% end %>
+</ol>
