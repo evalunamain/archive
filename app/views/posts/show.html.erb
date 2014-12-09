@@ -5,11 +5,8 @@
 <%= @post.url %>
 <a href="<%= edit_post_url %>">Edit Post</a>
 <ol>
-<% parent_comments = @hash_comments[nil] %>
-  <% parent_comments.each do |comment| %>
-
-    <%= render comment%>
-  <% end %>
+  <% parent_comments = @hash_comments[nil] %>
+  <%= render parent_comments %>
 </ol>
 
 <%= render "comments/form", parent_comment: nil, post_id: @post.id %>
