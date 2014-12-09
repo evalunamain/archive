@@ -1,1 +1,6 @@
 <h3>This is <%= @user.username.capitalize %>'s Page </h3>
+<ul>
+<% @user.posts.each do |post| %>
+  <%= render post %>
+<% end %>
+</ul>
