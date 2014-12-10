@@ -26,6 +26,8 @@ end
 
 feature 'user comments' do
   before(:each) do
+    log_in_as_eva
+    click_button "Log out"
     log_in_as_louie
     visit eva_url
   end

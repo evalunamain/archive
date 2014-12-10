@@ -1,4 +1,6 @@
 class Goal < ActiveRecord::Base
+  include Commentable
+  
   validates :title, :body, :privacy, :user_id, presence: true
   validates :completed, inclusion: { in: [true, false] }
   validates :privacy, inclusion: {in: ["Private", "Public"]}

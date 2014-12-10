@@ -20,3 +20,8 @@
   <%= link_to "#{goal.title}", goal_url(goal) %>
   <br>
 <% end %>
+<br>
+
+<%= render 'comments/form', commentable: @user %><br>
+
+<%= render @user.comments %>

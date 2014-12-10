@@ -31,3 +31,8 @@
 <% end %>
 <br>
 <p> <%= @goal.body %></p>
+<br>
+
+<%= render 'comments/form', commentable: @goal %><br>
+
+<%= render @goal.comments %>

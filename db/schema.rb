@@ -11,7 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141210173011) do
+ActiveRecord::Schema.define(version: 20141210214833) do
+
+  create_table "comments", force: true do |t|
+    t.text     "body"
+    t.integer  "commentable_id"
+    t.string   "commentable_type"
+    t.integer  "author_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["author_id"], name: "index_comments_on_author_id"
+  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id"
+
+  create_table "goal_comments", force: true do |t|
+    t.text     "body"
+    t.integer  "author_id"
+    t.integer  "goal_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "goal_comments", ["author_id"], name: "index_goal_comments_on_author_id"
+  add_index "goal_comments", ["goal_id"], name: "index_goal_comments_on_goal_id"
 
   create_table "goals", force: true do |t|
     t.string   "title",                          null: false
@@ -25,6 +48,17 @@ ActiveRecord::Schema.define(version: 20141210173011) do
 
   add_index "goals", ["user_id", "title"], name: "index_goals_on_user_id_and_title", unique: true
   add_index "goals", ["user_id"], name: "index_goals_on_user_id"
+
+  create_table "user_comments", force: true do |t|
+    t.text     "body"
+    t.integer  "user_id"
+    t.integer  "author_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_comments", ["author_id"], name: "index_user_comments_on_author_id"
+  add_index "user_comments", ["user_id"], name: "index_user_comments_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "username",        null: false
