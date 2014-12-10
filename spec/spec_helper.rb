@@ -63,6 +63,10 @@ def log_in_as_eva
   log_in("eva", "testtest")
 end
 
+def log_in_as_louie
+  log_in("louie", "12341234")
+end
+
 def fill_in_goal(title, body, privacy)
   fill_in 'Title', with: title
   fill_in 'Body', with: body
