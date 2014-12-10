@@ -1,0 +1,22 @@
+<h1><%= @user.username.capitalize %>'s page</h1>
+
+<h2>My Goals</h2>
+<br>
+
+<h3>Incomplete Goals: <%= @goals[:incomplete].count %></h3>
+<% @goals[:incomplete].each do |goal| %>
+  <% if goal.privacy == "Private" %>
+    <% next unless goal.author == current_user %>
+  <% end %>
+<%= link_to "#{goal.title}", goal_url(goal) %>
+<br>
+<% end %>
+
+<h3>Completed Goals: <%= @goals[:complete].count %></h3>
+<% @goals[:complete].each do |goal| %>
+  <% if goal.privacy == "Private" %>
+    <% next unless goal.author == current_user %>
+  <% end %>
+  <%= link_to "#{goal.title}", goal_url(goal) %>
+  <br>
+<% end %>

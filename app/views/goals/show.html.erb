@@ -1,0 +1,33 @@
+<h1><%= @goal.title %>
+<% if @goal.completed? %>
+--- Completed!
+<% end %></h1>
+<% if @goal.author == current_user%>
+  <% if @goal.privacy == "Private" %>
+    <h5>Private Goal</h5>
+  <% end %>
+  <br>
+  <%= button_to "Edit Goal", edit_goal_url(@goal), method: :get %>
+  <br>
+  <%= button_to "Delete Goal", goal_url(@goal), method: :delete %>
+  <br>
+
+  <% unless @goal.completed? %>
+    <form action="<%= goal_url(@goal) %>" method="post">
+      <%= token_tag form_authenticity_token %>
+      <input type="hidden" name="_method" value="patch">
+      <input type="hidden" name="goal[completed]" value="true">
+      <input type="submit" value="Goal completed!">
+    </form>
+  <% else %>
+    <form action="<%= goal_url(@goal) %>" method="post">
+      <%= token_tag form_authenticity_token %>
+      <input type="hidden" name="_method" value="patch">
+      <input type="hidden" name="goal[completed]" value="false">
+      <input type="submit" value="Still working on it.">
+    </form>
+  <% end %>
+
+<% end %>
+<br>
+<p> <%= @goal.body %></p>
