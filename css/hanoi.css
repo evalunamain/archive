@@ -1,0 +1,61 @@
+html, ul, li, div, p {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+
+.board {
+  /*border-bottom: 5px solid black;*/
+  width: 600px;
+  height: 300px;
+  display:block;
+}
+
+.group:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+ul {
+  width: 200px;
+  height: 300px;
+  display: block;
+  list-style-type: none;
+  float: left;
+  margin: 0 auto;
+}
+
+li {
+  background: white;
+  width: 200px;
+  height: 100px;
+  /*float: left;*/
+  display: block;
+  margin: 0 auto;
+  opacity: 0.6;
+}
+
+.three {
+  width: 100%;
+  background: blue;
+  margin: inherit;
+}
+
+.two {
+  width: 75%;
+  background: red;
+  margin: inherit;
+}
+
+.one {
+  width: 50%;
+  background: yellow;
+  margin: inherit;
+}
+
+.highlight {
+  opacity: 1;
+}
