@@ -21,7 +21,7 @@ Pokedex.Models.Pokemon.prototype.parse = function (payload) {
 }
 
 Pokedex.Models.Toy = Backbone.Model.extend({
-
+  urlRoot: '/toys/'
 });
 
 Pokedex.Collections.Pokemon = Backbone.Collection.extend({
@@ -30,6 +30,7 @@ Pokedex.Collections.Pokemon = Backbone.Collection.extend({
 });
 
 Pokedex.Collections.PokemonToys = Backbone.Collection.extend({
+  url: '/toys/',
   model: Pokedex.Models.Toy
 });
 
