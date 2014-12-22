@@ -11,7 +11,7 @@ Pokedex.RootView.prototype.renderPokemonDetail = function (pokemon) {
   $div.append($details);
   // json.extract! pokemon, :attack, :defense, :moves, :name, :poke_type
 
-
+  console.log(this);
   this.$pokeDetail.append($div);
 };
 

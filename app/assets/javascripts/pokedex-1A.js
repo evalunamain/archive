@@ -3,7 +3,7 @@ Pokedex.RootView.prototype.addPokemonToList = function (pokemon) {
   var name = pokemon.get('name');
   var pokeType = pokemon.get('poke_type');
   $li.html(name + ", " + pokeType);
-  this.$pokeList.append($li);
+  this.$pokeList.prepend($li);
 };
 
 Pokedex.RootView.prototype.refreshPokemon = function (callback) {
