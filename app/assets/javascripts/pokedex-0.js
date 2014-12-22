@@ -70,6 +70,10 @@ window.Pokedex.RootView = function ($el) {
     this.submitPokemonForm(event);
   }.bind(this));
 
+  this.$pokeDetail.on("click", "li.toy", function(event) {
+    this.selectToyFromList(event);
+  }.bind(this));
+
   // Click handlers go here.
 };
 
