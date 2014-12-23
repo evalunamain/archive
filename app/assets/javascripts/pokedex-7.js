@@ -7,6 +7,7 @@ Pokedex.Views.PokemonForm = Backbone.View.extend({
 
   render: function () {
     this.$el.append(JST["pokemonForm"]);
+    return this;
   },
 
   savePokemon: function (event) {
@@ -16,6 +17,7 @@ Pokedex.Views.PokemonForm = Backbone.View.extend({
     this.model.save({}, {
       success: function(){
         this.collection.add(this.model);
+        this.collection.trigger("refresh");
         Backbone.history.navigate("pokemon/" + this.model.id, {trigger: true})
       }.bind(this)
     });
