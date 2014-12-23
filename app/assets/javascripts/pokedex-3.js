@@ -2,6 +2,7 @@ Pokedex.RootView.prototype.reassignToy = function (event) {
   var $currentTarget = $(event.currentTarget);
 
   var pokemon = this.pokes.get($currentTarget.data("pokemon-id"));
+
   var toy = pokemon.toys().get($currentTarget.data("toy-id"));
 
   toy.set("pokemon_id", $currentTarget.val());
