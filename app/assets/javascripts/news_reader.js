@@ -7,8 +7,12 @@ window.NewsReader = {
     new NewsReader.Routers.NewsRouter({
       $rootEl: $("#content")
     });
-    this.feeds = new NewsReader.Collections.Feeds;
-    this.feeds.fetch();
+    if (this.user_id){
+      this.current_user = new NewsReader.Models.User({id : this.user_id});
+      this.current_user.fetch()
+    }
+    // this.feeds = new NewsReader.Collections.Feeds;
+    // this.feeds.fetch();
     Backbone.history.start();
   }
 };

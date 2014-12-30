@@ -1,5 +1,13 @@
 NewsReader.Collections.Feeds = Backbone.Collection.extend({
-  url: "api/feeds",
+
+  initialize: function (models, options){
+    this.user = options.user;
+  },
+
+  url: function() {
+    return this.user.url() + '/feeds';
+  },
+
   model: NewsReader.Models.Feed,
 
   getOrFetch: function(id) {

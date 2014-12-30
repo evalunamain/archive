@@ -6,20 +6,37 @@ NewsReader.Routers.NewsRouter = Backbone.Router.extend({
 
   routes: {
     "": "feedIndex",
-    "feeds/:id": "feedShow",
+    "feeds/:feed_id": "feedShow",
     "users/new": "newUser",
     "session/new": "newSession"
   },
 
   feedIndex: function (){
-    var feeds = new NewsReader.Views.FeedIndex({collection: NewsReader.feeds});
-    this._swapView(feeds);
+    var that = this;
+
+    if (NewsReader.current_user) {
+      NewsReader.current_user.fetch({
+        success: function (){
+          var feeds = NewsReader.current_user.userFeeds();
+          var feedView = new NewsReader.Views.FeedIndex({collection: feeds});
+          that._swapView(feedView);
+        }
+      });
+    }
   },
 
-  feedShow: function (id){
-    var feed = NewsReader.feeds.getOrFetch(id);
-    var feedView = new NewsReader.Views.FeedShow({model: feed});
-    this._swapView(feedView);
+
+  feedShow: function (feed_id){
+    var that = this;
+    if (NewsReader.current_user) {
+      NewsReader.current_user.fetch({
+        success: function (){
+          var feed = NewsReader.current_user.userFeeds().getOrFetch(feed_id);
+          var feedView = new NewsReader.Views.FeedShow({model: feed});
+          that._swapView(feedView);
+        }
+      });
+    }
   },
 
   newUser: function() {

@@ -12,6 +12,10 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def show
+    render json: User.find(params[:id]), include: :feeds
+
+  end
 
   private
   def user_params

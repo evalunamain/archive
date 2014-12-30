@@ -19,8 +19,11 @@ NewsReader.Views.NewSession = Backbone.View.extend({
     var session = new NewsReader.Models.Session();
 
     session.save(formData, {
-      success: function() {
-        Backbone.history.navigate("",{trigger: true});
+      success: function(response) {
+        NewsReader.current_user = new NewsReader.Models.User(
+          {id : response.id});
+        Backbone.history.navigate("");
+        window.location.reload();
       },
       error: function (model, xhr) {
         console.log(xhr);
