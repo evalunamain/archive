@@ -1,0 +1,14 @@
+<h1>Hello World</h1>
+<% if signed_in? %>
+<%= current_user.username.capitalize %>
+<%= button_to "Log Out", api_session_url, method: :delete %>
+<% end %>
+
+<a href="">Index</a>
+<div id='content'></div>
+
+<script>
+<% if signed_in? %>
+window.NewsReader.user_id = <%= current_user.id %>
+<% end %>
+</script>
