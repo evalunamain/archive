@@ -1,0 +1,54 @@
+def find_user
+  puts "Input your email:"
+  users_email = gets.chomp
+  user = User.find_by email: users_email
+
+  raise "email address not found" if user.nil?
+end
+
+def create_shortened_url(user)
+  puts "Enter URL to shorten:"
+  long_url = gets.chomp
+  url = ShortenedUrl.create_for_user_and_long_url!(user, long_url)
+  puts "Short url is: #{url.short_url}"
+end
+
+def visit_url(user)
+  puts "Type in the shortened URL"
+  short_url = gets.chomp
+  long_url = ShortenedUrl.find_by(short_url: short_url).long_url
+  Visit.record_visit!(user, short_url)
+  Launchy.open(long_url)
+end
+
+def display_popular_urls
+  puts "Enter the category:"
+  category = gets.chomp
+  topic = TagTopic.find_by( topic_name: category)
+  popular_urls = topic.most_popular_urls(3)
+  puts "Most popular #{category} links:"
+  3.times.each do |i|
+  puts "#{i+1}. #{popular_urls[i]}" if popular_urls.size > i
+  end
+end
+
+
+begin
+  user = find_user
+rescue
+  puts "Please try again."
+retry
+end
+
+puts " What do you want to do?"
+puts "1. Create shortened URL"
+puts "2. Visit shortened URL"
+puts "3. Show most popular URLs"
+response = gets.chomp.to_i
+if response == 1
+  create_shortened_url(user)
+elsif response == 2
+  visit_url(user)
+elsif response == 3
+  display_popular_urls
+end
