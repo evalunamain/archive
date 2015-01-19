@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NinetyNineCats</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<nav class="navbar" role="navigation">
+  <div class="container-fluid">
+		<a class="navbar-brand" href="<%= root_url %>">Home</a>
+  </div>
+	<div>
+		<% unless current_user %>
+			<ul class="nav navbar-nav">
+				<li class="active">
+				<a href=" <%= new_user_url %>"> Sign up!</a>
+			</li>
+			<li class="active">
+				<a href=" <%= new_session_url %>"> Log in!</a>
+			</li>
+				</ul>
+			<% else %>
+			<p class="navbar-text">Signed in as 
+			         <a href="<%= user_url(current_user) %>" class="navbar-link"><%= current_user.user_name %></a>
+						 </p>
+			<% end %>
+  </div>
+ </nav>
+<body>
+
+<div class="container">
+<%= yield %>
+</div>
+
+</body>
+</html>

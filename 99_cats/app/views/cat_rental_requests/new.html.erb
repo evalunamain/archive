@@ -1,0 +1,36 @@
+<h1>Rent Our Cat(s)!</h1>
+<%= @cat_rental_request.errors.full_messages %>
+
+<form action="<%= cat_rental_requests_url %>" method="POST">
+<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+  <label for="cat_rental_request_cat">Cat</label>
+  <select name="cat_rental_request[cat_id]" id="cat_rental_request_cat">
+  <option> </option>
+
+  <% @cats.each do |cat| %>
+    <option value = <%= cat.id %>
+      <%="selected" if @cat_rental_request.cat_id == cat.id %>>
+      <%= cat.name %>
+    </option>
+  <% end %>
+  </select>
+  <br>
+
+  <label for="cat_rental_request_start_date">Start Date</label>
+  <input name="cat_rental_request[start_date]"
+    id="cat_rental_request_start_date"
+    value= "<%= @cat_rental_request.start_date %>"
+    type="date">
+  <br>
+
+    <label for="cat_rental_request_end_date">End Date</label>
+    <input name="cat_rental_request[end_date]"
+    id="cat_rental_request_end_date"
+    value= "<%= @cat_rental_request.end_date %>"
+    type="date">
+    <br>
+
+  <input type="submit" value="GET YOUR CATTTTTTTT!@#TGJQP@#!">
+
+</form>

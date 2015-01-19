@@ -1,0 +1,27 @@
+<h1><%= @cat.name%>'s DOPE PAGE!</h1>
+
+<body>
+  <table>
+    <% [:birth_date, :color, :name, :sex, :description].each do |param| %>
+      <tr>
+        <td><b> <%= param.to_s.gsub("_", " ") %> </b></td>
+        <td><%= @cat.send(param) %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <h2>I might be working on: </h2>
+    <ul>
+      <% @cat_rental_requests.each do |request| %>
+        <li>From <%= request.start_date %> to <%= request.end_date %> </li>
+        <li>Playing with: <%= request.user.user_name %></li>
+        <li>Status: <%= request.status.downcase.capitalize %> </li>
+        <% if request.status == "PENDING" && @cat.is_owner?(current_user) %>
+          <%= button_to "Approve Request", approve_cat_rental_request_url(request) %>
+          <%= button_to "Deny Request", deny_cat_rental_request_url(request) %>
+        <% end %>
+        <br>
+      <% end %>
+    </ul>
+
+</body>
