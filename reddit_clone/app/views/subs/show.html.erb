@@ -1,0 +1,5 @@
+<a href="<%= new_post_url %>"> Add a New Post </a>
+<br>
+<% @sub.posts.each do |post| %>
+  <%= link_to "#{post.title}", post_url(post) %>
+<% end %>

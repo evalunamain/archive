@@ -1,0 +1,6 @@
+<li><%= link_to "#{comment.content}", comment_url(comment)  %>
+  <ol>
+  <% @hash_comments[comment.id].each do |comment| %>
+    <%= render comment %>
+  <% end %>
+  </ol>
