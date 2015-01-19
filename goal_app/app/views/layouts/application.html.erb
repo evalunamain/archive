@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GoalSetterProject</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<%= flash[:errors] if flash %>
+<% if signed_in? %>
+Currently logged in as: <%= current_user.username %>
+<%= button_to "Log out", session_url, method: :delete %>
+<% end %>
+<%= yield %>
+
+</body>
+</html>
