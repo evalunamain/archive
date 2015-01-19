@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MusicProject</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<% if signed_in? %>
+Welcome <%= current_user.email %>
+<%= button_to "Log Out", action= session_url, method: :delete %>
+<% end %>
+
+<% if flash[:errors] %>
+  <% flash[:errors].each do |error| %>
+    <div><%= error %> </div>
+  <% end %>
+<% end %>
+
+<%= yield %>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<% action_url = (action == :new ? users_url : user_url(@user)) %>
+
+<form action="<%= action_url %>" method="post">
+  <%= auth_token %>
+  <% if action == :edit %>
+  <input type="hidden" name="_method" value="patch">
+  <% end %>
+  <label for="email"> Email
+    <br>
+    <input type="text" id="email" name="user[email]" value="<%= @user.email %>">
+  </label>
+  <br>
+
+  <label for="password">Password
+    <br>
+    <input type="password" id="password" name="user[password]">
+  </label>
+  <br>
+
+  <% if action == :new %>
+  <input type="submit" name="Sign Up">
+  <% else %>
+  <input type="submit" name="Edit">
+  <% end %>
+  </form>

@@ -1,0 +1,5 @@
+<h4>Author: <%= note.user.email %></h3>
+<h5><%= ugly_lyrics(note.body) %></h4>
+  <% if note.user == current_user %>
+    <%= button_to "Delete Note", note_url(note), method: :delete %>
+  <% end %>
