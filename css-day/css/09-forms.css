@@ -1,0 +1,13 @@
+/* PHASE 9: Forms */
+form {
+  border: 
+}
+
+main.thumb {
+  float: right;
+}
+
+.cancel strong:hover {
+  color: red;
+  cursor: pointer;
+}
