@@ -1,0 +1,29 @@
+// Place all the styles related to the Posts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body, h1, div, h3, button, ul, li, p {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  text-decoration: none;
+  font: inherit
+}
+
+ul {
+  list-style-type: none
+}
+
+button.delete {
+  border: 2px solid black;
+  padding: 5px
+}
+
+div#sidebar{
+  float: left
+}
+
+div#content{
+  float: left
+}
